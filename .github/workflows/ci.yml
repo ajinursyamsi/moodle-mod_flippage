@@ -36,8 +36,8 @@ jobs:
 
       - name: Install moodle-plugin-ci
         run: |
-          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^4
-          echo "$(pwd)/ci/bin" >> "$GITHUB_PATH"
+          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ../ci ^4
+          echo "$(pwd)/../ci/bin" >> "$GITHUB_PATH"
 
       - name: Install Moodle
         run: moodle-plugin-ci install --db-type=pgsql --db-host=127.0.0.1 --db-user=moodle --db-pass=moodle --db-name=moodle_ci --moodle=MOODLE_405_STABLE --branch=main --no-init

@@ -9,14 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql:8.0
+      postgres:
+        image: postgres:16
         env:
-          MYSQL_ROOT_PASSWORD: root
+          POSTGRES_USER: moodle
+          POSTGRES_PASSWORD: moodle
+          POSTGRES_DB: moodle
         ports:
-          - 3306:3306
+          - 5432:5432
         options: >-
-          --health-cmd="mysqladmin ping --silent"
+          --health-cmd="pg_isready -U moodle"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -39,7 +41,7 @@ jobs:
           echo "$(pwd)/ci/bin" >> "$GITHUB_PATH"
 
       - name: Install Moodle
-        run: moodle-plugin-ci install --db-type=mysqli --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=MOODLE_405_STABLE --branch=main
+        run: moodle-plugin-ci install --db-type=pgsql --db-host=127.0.0.1 --db-user=moodle --db-pass=moodle --db-name=moodle --moodle=MOODLE_405_STABLE --branch=main
 
       - name: PHP lint
         run: moodle-plugin-ci phplint

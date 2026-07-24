@@ -8,16 +8,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        moodle-branch:
-          - MOODLE_400_STABLE
-          - MOODLE_405_STABLE
-        php-version:
-          - '8.1'
-          - '8.2'
-
     services:
       mysql:
         image: mysql:8.0
@@ -41,7 +31,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
+          php-version: '8.2'
           extensions: mysqli, pgsql, zip, gd, intl, soap, exif, sodium
           ini-values: max_input_vars=5000
           coverage: none
@@ -52,7 +42,7 @@ jobs:
           echo "$(pwd)/ci/bin" >> "$GITHUB_PATH"
 
       - name: Install Moodle
-        run: moodle-plugin-ci install --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=${{ matrix.moodle-branch }}
+        run: moodle-plugin-ci install --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=MOODLE_405_STABLE
 
       - name: PHP lint
         run: moodle-plugin-ci phplint

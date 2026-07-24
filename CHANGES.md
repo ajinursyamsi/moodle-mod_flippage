@@ -1,5 +1,9 @@
 # Change log
 
+## 2026072500
+
+- Add upgrade script required by Moodle plugin validation.
+
 ## 2026072408
 
 - Initial public release candidate.

@@ -7,7 +7,7 @@
 // (at your option) any later version.
 
 /**
- * Flip page activity version information.
+ * Upgrade steps for the Flip page activity.
  *
  * @package    mod_flippage
  * @copyright  2026 Aji Nursyamsi <aji.nursyamsi17@gmail.com>
@@ -16,7 +16,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026072500;
-$plugin->requires = 2022041900;
-$plugin->component = 'mod_flippage';
-$plugin->cron = 0;
+/**
+ * Performs database upgrades for Flip page.
+ *
+ * @param int $oldversion previously installed plugin version
+ * @return bool
+ */
+function xmldb_flippage_upgrade($oldversion) {
+    return true;
+}

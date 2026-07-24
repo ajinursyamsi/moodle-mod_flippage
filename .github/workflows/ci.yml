@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Check out plugin
         uses: actions/checkout@v4
-        with:
-          path: plugin
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2

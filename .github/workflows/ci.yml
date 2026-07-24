@@ -1,0 +1,61 @@
+name: Moodle Plugin CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        moodle-branch:
+          - MOODLE_400_STABLE
+          - MOODLE_405_STABLE
+        php-version:
+          - '8.1'
+          - '8.2'
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: moodle
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Check out plugin
+        uses: actions/checkout@v4
+        with:
+          path: plugin
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mysqli, pgsql, zip, gd, intl, soap, exif, sodium
+          ini-values: max_input_vars=5000
+          coverage: none
+
+      - name: Install moodle-plugin-ci
+        run: |
+          composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^4
+          echo "$(pwd)/ci/bin" >> "$GITHUB_PATH"
+
+      - name: Install Moodle
+        run: moodle-plugin-ci install --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=${{ matrix.moodle-branch }}
+
+      - name: PHP lint
+        run: moodle-plugin-ci phplint
+
+      - name: Validate plugin
+        run: moodle-plugin-ci validate

@@ -1,0 +1,6 @@
+/.phpunit.result.cache
+/.moodle-plugin-ci/
+/.idea/
+/.vscode/
+*.zip
+*.tar.gz

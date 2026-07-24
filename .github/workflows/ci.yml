@@ -42,7 +42,7 @@ jobs:
           echo "$(pwd)/ci/bin" >> "$GITHUB_PATH"
 
       - name: Install Moodle
-        run: moodle-plugin-ci install --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=MOODLE_405_STABLE --branch=main
+        run: moodle-plugin-ci install --db-type=mysqli --db-host=127.0.0.1 --db-user=root --db-pass=root --db-name=moodle --moodle=MOODLE_405_STABLE --branch=main
 
       - name: PHP lint
         run: moodle-plugin-ci phplint

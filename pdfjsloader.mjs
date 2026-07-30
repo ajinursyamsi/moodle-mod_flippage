@@ -1,4 +1,3 @@
-<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -15,16 +14,14 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Flip page activity version information.
+ * Native ES module bridge for PDF.js.
  *
- * @package    mod_flippage
+ * @module     mod_flippage/pdfjsloader
  * @copyright  2026 Aji Nursyamsi <aji.nursyamsi17@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+import * as pdfjs from './vendor/pdfjs/pdf.mjs';
 
-$plugin->version = 2026073000;
-$plugin->requires = 2022041900;
-$plugin->component = 'mod_flippage';
-$plugin->cron = 0;
+window.modFlipPagePdfJs = pdfjs;
+window.dispatchEvent(new CustomEvent('mod_flippage_pdfjs_loaded'));

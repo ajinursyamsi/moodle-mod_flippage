@@ -1,5 +1,18 @@
 <?php
 // This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Displays a Flip page activity.
@@ -81,10 +94,9 @@ if (!$filedata) {
 
 $config = [
     'cmid' => $cm->id,
-    'sesskey' => sesskey(),
-    'markurl' => (new moodle_url('/mod/flippage/mark.php'))->out(false),
     'exiturl' => (new moodle_url('/course/view.php', ['id' => $course->id]))->out(false),
-    'pdfjsurl' => (new moodle_url('/mod/flippage/vendor/pdfjs/pdf.mjs'))->out(false),
+    'pageflipurl' => (new moodle_url('/mod/flippage/vendor/stpageflip/page-flip.browser.min.js'))->out(false),
+    'pdfjsloaderurl' => (new moodle_url('/mod/flippage/pdfjsloader.mjs'))->out(false),
     'pdfworkerurl' => (new moodle_url('/mod/flippage/vendor/pdfjs/pdf.worker.mjs'))->out(false),
     'files' => $filedata,
     'strings' => [
@@ -161,18 +173,6 @@ echo html_writer::div('', 'flippage-book', ['id' => 'flippage-book']);
 echo html_writer::end_div();
 echo html_writer::end_div();
 
-echo html_writer::script('window.modFlipPageConfig = ' . json_encode($config) . ';');
-echo html_writer::script(
-    '(function(){if(window.define&&window.define.amd){window.modFlipPageDefine=window.define;window.define=undefined;}}());'
-);
-echo html_writer::tag('script', '', [
-    'src' => (new moodle_url('/mod/flippage/vendor/stpageflip/page-flip.browser.min.js'))->out(false),
-]);
-echo html_writer::script(
-    '(function(){if(window.modFlipPageDefine){window.define=window.modFlipPageDefine;delete window.modFlipPageDefine;}}());'
-);
-echo html_writer::tag('script', '', [
-    'src' => (new moodle_url('/mod/flippage/viewer.js'))->out(false),
-]);
+$PAGE->requires->js_call_amd('mod_flippage/viewer', 'init', [$config]);
 
 echo $OUTPUT->footer();

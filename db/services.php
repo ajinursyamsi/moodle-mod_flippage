@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Flip page activity version information.
+ * External service definitions for Flip page.
  *
  * @package    mod_flippage
  * @copyright  2026 Aji Nursyamsi <aji.nursyamsi17@gmail.com>
@@ -24,7 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2026073000;
-$plugin->requires = 2022041900;
-$plugin->component = 'mod_flippage';
-$plugin->cron = 0;
+$functions = [
+    'mod_flippage_update_progress' => [
+        'classname' => 'mod_flippage\external\update_progress',
+        'methodname' => 'execute',
+        'description' => 'Update reading progress for a Flip page activity.',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'mod/flippage:view',
+    ],
+];
